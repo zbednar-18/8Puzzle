@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Scanner;
 /**
  * 
@@ -18,7 +17,6 @@ public class createPuzzle {
 		
 		Scanner puzzleScanner = new Scanner(System.in);
 		enterMatrixData(puzzleScanner, matrix, row, col);
-		puzzleScanner.close();
 						
 		// Convert matrix back into a string
 		StringBuffer rootStringBuffer = new StringBuffer();
@@ -31,31 +29,31 @@ public class createPuzzle {
 		String root = rootStringBuffer.toString();  		// Initialize the root variable
 		String goal = "123804765";							// Initialize the goal variable
 		
+//		System.out.println(root);
 		Scanner searchScanner = new Scanner(System.in);
 		Search search = new Search(new Node(root), goal);
-
-				
+		selectSearchMethod(searchScanner, search);
+		
 	}
 	
 // ================================================================================================================================= \\
 	
 	public static void selectSearchMethod(Scanner searchScanner, Search search) {
 		System.out.println("Which type of search algorithm would you like to use to complete this puzzle?");
-		System.out.println("1 - Breadth First Search");
-		System.out.println("2 - A* using the number of misplaced tiles as the heuristic");
-		System.out.println("3 - A* using the sum of the distances of each tile to their goal position as the heuristic");
+		System.out.println("	1 - Breadth First Search");
+		System.out.println("	2 - A* using the number of misplaced tiles as the heuristic");
+		System.out.println("	3 - A* using the sum of the distances of each tile to their goal position as the heuristic");
 		
-		String searchMethod = searchScanner.nextLine();
+		int searchMethod = searchScanner.nextInt();
 		
-			if ( searchMethod == "1") {
+		if ( searchMethod == 1) {
 			search.breadthFirstSearch();
-		
-		} else if ( searchMethod == "2") {
-			System.out.println("Under construction");
-		} else if ( searchMethod == "3") {
-			System.out.println("Under construction");
+		} else if ( searchMethod == 2) {
+			System.out.println("Under Construction");
+		} else if ( searchMethod == 3) {
+			System.out.println("Under Construction");
 		} else {
-			System.out.println("You must choose from the options provided (1, 2, or 3).");
+			System.out.println("The entered number must be between the values of 0 and 8.");
 			System.out.println("Please try again!");
 			System.exit(0);
 		}
