@@ -16,6 +16,8 @@ public class createPuzzle {
 		int[][] matrix = new int[row][col];
 		
 		Scanner puzzleScanner = new Scanner(System.in);
+		Scanner searchScanner = new Scanner(System.in);
+		
 		enterMatrixData(puzzleScanner, matrix, row, col);
 						
 		// Convert matrix back into a string
@@ -28,30 +30,39 @@ public class createPuzzle {
 		
 		String root = rootStringBuffer.toString();  		// Initialize the root variable
 		String goal = "123804765";							// Initialize the goal variable
+				
+		// Determine if the user's puzzle is solvable and if it is, solve the puzzle
+		if(solvable(matrix)) {
+			System.out.print("\n" + "This puzzle is able to be solved!" + "\n\n");
 		
-//		System.out.println(root);
-		Scanner searchScanner = new Scanner(System.in);
-		Search search = new Search(new Node(root), goal);
-		selectSearchMethod(searchScanner, search);
+			Search search = new Search(new Node(root), goal);
+			selectSearchMethod(searchScanner, search);
+		} else {
+			System.out.print("\n" + "This puzzle is not able to be solved!" + "\n\n");
+			printMatrix(matrix, row, col);
+		}
 		
 	}
 	
 // ================================================================================================================================= \\
 	
+	// Function to allow the user to select a search method
 	public static void selectSearchMethod(Scanner searchScanner, Search search) {
+		System.out.print("====================================================================================================" + "\n\n");
 		System.out.println("Which type of search algorithm would you like to use to complete this puzzle?");
 		System.out.println("	1 - Breadth First Search");
 		System.out.println("	2 - A* using the number of misplaced tiles as the heuristic");
-		System.out.println("	3 - A* using the sum of the distances of each tile to their goal position as the heuristic");
+		System.out.print("	3 - A* using the sum of the distances of each tile to their goal position as the heuristic" + "\n\n");
+		System.out.print("====================================================================================================" + "\n");
 		
-		int searchMethod = searchScanner.nextInt();
-		
+		// If-else statement to determine which search algorithm to use based off user input
+		int searchMethod = searchScanner.nextInt();				 // Initialize variable for scanner input
 		if ( searchMethod == 1) {
 			search.breadthFirstSearch();
 		} else if ( searchMethod == 2) {
-			System.out.println("Under Construction");
+			System.out.println("Under Construction");            // Replace this with method for hamming A* function
 		} else if ( searchMethod == 3) {
-			System.out.println("Under Construction");
+			System.out.println("Under Construction");			 // Replace this with method for manhattan A* function
 		} else {
 			System.out.println("The entered number must be between the values of 0 and 8.");
 			System.out.println("Please try again!");
@@ -67,7 +78,7 @@ public class createPuzzle {
 		
 		// Need to store the initial puzzle input from the user as a String
 		String userInput = puzzleScanner.nextLine();
-		String[] inputNumber = userInput.split(",");
+		String[] inputNumber = userInput.split("");
 		
 		// Create a 1D array to store the input string and parse the integers with , as delimeter
 		int matrixNum[] = new int[9];
@@ -79,7 +90,7 @@ public class createPuzzle {
 		for( int i = 0; i < row; i++) {
 			for (int j = 0; j < col; j++) {
 				if ( matrixNum[(j*row) + i] > 8) {
-					System.out.println("The entered number must be between the values of 0 and 8.");
+					System.out.println("You may not enter any values greater than 8!");
 					System.out.println("Please try again!");
 					System.exit(0);
 				} else {
@@ -87,30 +98,23 @@ public class createPuzzle {
 				}
 			}
 		}
-		
-		// Determine if the user's puzzle is solvable
-		if(solvable(matrix)) {
-			System.out.println("This puzzle is solvable.");
-			printMatrix(matrix, row, col);
-		} else {
-			System.out.println("This puzzle is not solvable.");
-			printMatrix(matrix, row, col);
-		}
-		
+				
 	}
 	
 // ================================================================================================================================= \\
 	
 	// Function to display the user's custom puzzle
 	public static void printMatrix(int[][] matrix, int row, int col){
-		System.out.println("This is the starting matrix:  ");
+    	System.out.println("        This is your puzzle!       ");
+    	System.out.println("===================================");
 		        
 		for (int i = 0; i < row; i++) {
 			for (int j = 0; j < col; j++) {
-				System.out.print(matrix[i][j]+"\t");
+				System.out.print("        " + matrix[i][j] + "");
 			}       
 			System.out.println();
 		}
+        System.out.println("===================================");
 	}
 	
 // ================================================================================================================================= \\

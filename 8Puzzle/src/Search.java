@@ -36,10 +36,11 @@ public class Search {
     	Queue<Node> queue = new LinkedList<Node>();
     	Node currentNode = node;
     	
-    	// While current node does not equal the goal node, continue looping to find solution
+    	// While current node does not equal the goal node, continue looping to find solution while adding the solution
+    	// path to a string. This will allow for the path to be displayed in the final output.
     	while( !currentNode.getCurrentState().equals(goal)) {
     		setOfStates.add(currentNode.getCurrentState());
-    		List<String> nextNode = Node.getSuccessors(currentNode.getCurrentState());
+    		List<String> nextNode = Node.getChildNode(currentNode.getCurrentState());
     		for(String nodes : nextNode) {
     			if (setOfStates.contains(nodes)) 
     				continue;
@@ -50,11 +51,8 @@ public class Search {
     			queue.add(child);
     		}
     		currentNode = queue.poll();
-    		
     	}
-    	
     	Node.printOutput(currentNode, setOfStates, root);
-    	
     }
     
 // ================================================================================================================================= \\
