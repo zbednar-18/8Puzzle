@@ -15,11 +15,44 @@ public class createPuzzle {
 		Scanner scanner = new Scanner(System.in);
 		int row = 3;
 		int col = 3;
+		
 		int[][] matrix = new int[row][col];
+		int[][] goal = { {1, 2, 3}, {8, 0, 4}, {7, 6, 5} };
 		
 		enterMatrixData(scanner, matrix, row, col);
-		printMatrix(matrix, row, col);
+		
+		if(solvable(matrix)) {
+			System.out.println("This puzzle is solvable");
+			printMatrix(matrix, row, col);
+		} else {
+			System.out.println("This puzzle is not Solvable");
+			printMatrix(matrix, row, col);
+		}
+				
 	}
+		
+// ================================================================================================================================= \\
+
+	// Find the amount of inversed tiles are in the puzzle
+	static int getInverseCount(int[][] arr) {
+		int inverse_count = 0;
+		for( int i = 0; i < 3 - 1; i++) {
+			for( int j = i + 1; j < 3; j++) {
+				if ( arr[j][i] > 0 && arr[j][i] > 0 && arr[j][i] > arr[i][j]) {
+					inverse_count++;
+				}
+			}
+		}
+		return inverse_count;
+	}
+	
+	// Determine whether or not the puzzle is solvable
+	static boolean solvable(int[][] puzzle) {
+		int inverseCount = getInverseCount(puzzle);
+		return (inverseCount % 2 == 0);
+	}
+	
+// ================================================================================================================================= \\	
 	
 	// Function to prompt user to enter custom puzzle
 	public static void enterMatrixData(Scanner scanner, int[][] matrix, int row, int col) {
@@ -44,7 +77,7 @@ public class createPuzzle {
 	
 	// Function to display the user's custom puzzle
 	public static void printMatrix(int[][] matrix, int row, int col){
-		System.out.println("Your Matrix is : ");
+		System.out.println("This is the starting matrix: ");
 		        
 		for (int i = 0; i < row; i++) {
 			for (int j = 0; j < col; j++) {
