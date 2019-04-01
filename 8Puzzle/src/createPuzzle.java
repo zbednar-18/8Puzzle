@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 /**
  * 
@@ -12,25 +13,108 @@ public class createPuzzle {
 	
 	public static void main(String[] args) {
 		
-		Scanner scanner = new Scanner(System.in);
-		int row = 3;
-		int col = 3;
-		
+		int row = 3, col = 3;
 		int[][] matrix = new int[row][col];
-		int[][] goal = { {1, 2, 3}, {8, 0, 4}, {7, 6, 5} };
 		
-		enterMatrixData(scanner, matrix, row, col);
-		
-		if(solvable(matrix)) {
-			System.out.println("This puzzle is solvable");
-			printMatrix(matrix, row, col);
-		} else {
-			System.out.println("This puzzle is not Solvable");
-			printMatrix(matrix, row, col);
+		Scanner puzzleScanner = new Scanner(System.in);
+		enterMatrixData(puzzleScanner, matrix, row, col);
+		puzzleScanner.close();
+						
+		// Convert matrix back into a string
+		StringBuffer rootStringBuffer = new StringBuffer();
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix[i].length; j++) {
+				rootStringBuffer.append(matrix[i][j]);
+			}
 		}
+		
+		String root = rootStringBuffer.toString();  		// Initialize the root variable
+		String goal = "123804765";							// Initialize the goal variable
+		
+		Scanner searchScanner = new Scanner(System.in);
+		Search search = new Search(new Node(root), goal);
+
 				
 	}
+	
+// ================================================================================================================================= \\
+	
+	public static void selectSearchMethod(Scanner searchScanner, Search search) {
+		System.out.println("Which type of search algorithm would you like to use to complete this puzzle?");
+		System.out.println("1 - Breadth First Search");
+		System.out.println("2 - A* using the number of misplaced tiles as the heuristic");
+		System.out.println("3 - A* using the sum of the distances of each tile to their goal position as the heuristic");
 		
+		String searchMethod = searchScanner.nextLine();
+		
+			if ( searchMethod == "1") {
+			search.breadthFirstSearch();
+		
+		} else if ( searchMethod == "2") {
+			System.out.println("Under construction");
+		} else if ( searchMethod == "3") {
+			System.out.println("Under construction");
+		} else {
+			System.out.println("You must choose from the options provided (1, 2, or 3).");
+			System.out.println("Please try again!");
+			System.exit(0);
+		}
+	}
+	
+// ================================================================================================================================= \\
+	
+	// Function to prompt user to enter custom puzzle
+	public static void enterMatrixData(Scanner puzzleScanner, int[][] matrix, int row, int col) {
+		System.out.println("Please enter 9 values between 0 and 8: ");
+		
+		// Need to store the initial puzzle input from the user as a String
+		String userInput = puzzleScanner.nextLine();
+		String[] inputNumber = userInput.split(",");
+		
+		// Create a 1D array to store the input string and parse the integers with , as delimeter
+		int matrixNum[] = new int[9];
+		for ( int i = 0; i < inputNumber.length; i++) {
+				matrixNum[i] = Integer.parseInt(inputNumber[i]);
+		}
+		
+		// Format the 1D array into a 2D array for display purposes
+		for( int i = 0; i < row; i++) {
+			for (int j = 0; j < col; j++) {
+				if ( matrixNum[(j*row) + i] > 8) {
+					System.out.println("The entered number must be between the values of 0 and 8.");
+					System.out.println("Please try again!");
+					System.exit(0);
+				} else {
+					matrix[j][i] = matrixNum[(j*row) + i];
+				}
+			}
+		}
+		
+		// Determine if the user's puzzle is solvable
+		if(solvable(matrix)) {
+			System.out.println("This puzzle is solvable.");
+			printMatrix(matrix, row, col);
+		} else {
+			System.out.println("This puzzle is not solvable.");
+			printMatrix(matrix, row, col);
+		}
+		
+	}
+	
+// ================================================================================================================================= \\
+	
+	// Function to display the user's custom puzzle
+	public static void printMatrix(int[][] matrix, int row, int col){
+		System.out.println("This is the starting matrix:  ");
+		        
+		for (int i = 0; i < row; i++) {
+			for (int j = 0; j < col; j++) {
+				System.out.print(matrix[i][j]+"\t");
+			}       
+			System.out.println();
+		}
+	}
+	
 // ================================================================================================================================= \\
 
 	// Find the amount of inversed tiles are in the puzzle
@@ -45,6 +129,8 @@ public class createPuzzle {
 		}
 		return inverse_count;
 	}
+
+// ================================================================================================================================= \\
 	
 	// Determine whether or not the puzzle is solvable
 	static boolean solvable(int[][] puzzle) {
@@ -52,39 +138,6 @@ public class createPuzzle {
 		return (inverseCount % 2 == 0);
 	}
 	
-// ================================================================================================================================= \\	
-	
-	// Function to prompt user to enter custom puzzle
-	public static void enterMatrixData(Scanner scanner, int[][] matrix, int row, int col) {
-		System.out.println("Please enter 9 values between 0 and 8: ");
-		          
-		for (int i = 0; i < row; i++) {
-			for (int j = 0; j < col; j++) {
-				int matrixNum = scanner.nextInt();
-				
-				// If statement to handle whether or not a value can be accepted
-				if(matrixNum > 8) {
-					System.out.println("The entered number must be between the values of 0 and 8.");
-					System.out.println("Please try again!");
-					System.exit(0);
-				} else {
-					matrix[i][j] = matrixNum;
-				}
-				
-			}
-		}
-	}
-	
-	// Function to display the user's custom puzzle
-	public static void printMatrix(int[][] matrix, int row, int col){
-		System.out.println("This is the starting matrix:  ");
-		        
-		for (int i = 0; i < row; i++) {
-			for (int j = 0; j < col; j++) {
-				System.out.print(matrix[i][j]+"\t");
-			}       
-			System.out.println();
-		}
-	}
+// ================================================================================================================================= \\
 	
 }
