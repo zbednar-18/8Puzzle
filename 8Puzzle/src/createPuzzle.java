@@ -115,12 +115,12 @@ public class createPuzzle {
 	
 // ================================================================================================================================= \\
 
-	// Find the amount of inversed tiles are in the puzzle
-	static int getInverseCount(int[][] arr) {
+	// Find the amount of tiles that have inversed positions
+	static int getInverseCount(int[][] matrix) {
 		int inverse_count = 0;
 		for( int i = 0; i < 3 - 1; i++) {
 			for( int j = i + 1; j < 3; j++) {
-				if ( arr[j][i] > 0 && arr[j][i] > 0 && arr[j][i] > arr[i][j]) {
+				if ( matrix[j][i] > 0 && matrix[j][i] > 0 && matrix[j][i] > matrix[i][j]) {
 					inverse_count++;
 				}
 			}
@@ -135,7 +135,5 @@ public class createPuzzle {
 		int inverseCount = getInverseCount(puzzle);
 		return (inverseCount % 2 == 0);
 	}
-	
-// ================================================================================================================================= \\
-	
+		
 }

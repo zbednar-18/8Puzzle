@@ -13,11 +13,11 @@ public class Search {
         this.root = root;
     }
 
-    public String getGoalSate() {
+    public String getGoalState() {
         return goal;
     }
 
-    public void setGoalSate(String goal) {
+    public void setGoalState(String goal) {
         this.goal = goal;
     }
 
@@ -32,7 +32,6 @@ public class Search {
     public void breadthFirstSearch() {
     	Set<String> setOfStates = new HashSet<String>();
     	Node node = new Node(root.getCurrentState());
-    	node.setCost(0);
     	
     	Queue<Node> queue = new LinkedList<Node>();
     	Node currentNode = node;
@@ -41,7 +40,7 @@ public class Search {
     	while( !currentNode.getCurrentState().equals(goal)) {
     		setOfStates.add(currentNode.getCurrentState());
     		List<String> nextNode = Node.getSuccessors(currentNode.getCurrentState());
-    		for (String nodes : nextNode) {
+    		for(String nodes : nextNode) {
     			if (setOfStates.contains(nodes)) 
     				continue;
     			setOfStates.add(nodes);
@@ -55,7 +54,6 @@ public class Search {
     	}
     	
     	Node.printOutput(currentNode, setOfStates, root);
-    	
     	
     }
     
