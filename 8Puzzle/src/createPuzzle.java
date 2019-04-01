@@ -77,7 +77,7 @@ public class createPuzzle {
 	
 	// Function to display the user's custom puzzle
 	public static void printMatrix(int[][] matrix, int row, int col){
-		System.out.println("This is the starting matrix: ");
+		System.out.println("This is the starting matrix:  ");
 		        
 		for (int i = 0; i < row; i++) {
 			for (int j = 0; j < col; j++) {
