@@ -103,68 +103,82 @@ public class Node {
  // ================================================================================================================================= \\
  //                                              Get the next node in line                                                            \\
  // ================================================================================================================================= \\
-	public static ArrayList<String> getSuccessors(String state) {
-        ArrayList<String> successors = new ArrayList<String>();
+	public static ArrayList<String> getChildNode(String state) {
+        ArrayList<String> childNode = new ArrayList<String>();
 
         switch (state.indexOf("0")) {
+        
+        	// Add the next node to a list when a move is made from the top left hand corner of the board
             case 0: {
-                successors.add(state.replace(state.charAt(0), '*').replace(state.charAt(1), state.charAt(0)).replace('*', state.charAt(1)));
-                successors.add(state.replace(state.charAt(0), '*').replace(state.charAt(3), state.charAt(0)).replace('*', state.charAt(3)));
+                childNode.add(state.replace(state.charAt(0), '*').replace(state.charAt(1), state.charAt(0)).replace('*', state.charAt(1)));
+                childNode.add(state.replace(state.charAt(0), '*').replace(state.charAt(3), state.charAt(0)).replace('*', state.charAt(3)));
                 break;
             }
+            
+        	// Add the next node to a list when a move is made from the top row middle of the board
             case 1: {
-                successors.add(state.replace(state.charAt(1), '*').replace(state.charAt(0), state.charAt(1)).replace('*', state.charAt(0)));
-                successors.add(state.replace(state.charAt(1), '*').replace(state.charAt(2), state.charAt(1)).replace('*', state.charAt(2)));
-                successors.add(state.replace(state.charAt(1), '*').replace(state.charAt(4), state.charAt(1)).replace('*', state.charAt(4)));
+                childNode.add(state.replace(state.charAt(1), '*').replace(state.charAt(0), state.charAt(1)).replace('*', state.charAt(0)));
+                childNode.add(state.replace(state.charAt(1), '*').replace(state.charAt(2), state.charAt(1)).replace('*', state.charAt(2)));
+                childNode.add(state.replace(state.charAt(1), '*').replace(state.charAt(4), state.charAt(1)).replace('*', state.charAt(4)));
                 break;
             }
+            
+        	// Add the next node to a list when a move is made from the top right hand corner of the board
             case 2: {
-
-                successors.add(state.replace(state.charAt(2), '*').replace(state.charAt(1), state.charAt(2)).replace('*', state.charAt(1)));
-                successors.add(state.replace(state.charAt(2), '*').replace(state.charAt(5), state.charAt(2)).replace('*', state.charAt(5)));
+                childNode.add(state.replace(state.charAt(2), '*').replace(state.charAt(1), state.charAt(2)).replace('*', state.charAt(1)));
+                childNode.add(state.replace(state.charAt(2), '*').replace(state.charAt(5), state.charAt(2)).replace('*', state.charAt(5)));
                 break;
             }
+            
+        	// Add the next node to a list when a move is made from the middle row left hand side of the board
             case 3: {
-                successors.add(state.replace(state.charAt(3), '*').replace(state.charAt(0), state.charAt(3)).replace('*', state.charAt(0)));
-                successors.add(state.replace(state.charAt(3), '*').replace(state.charAt(4), state.charAt(3)).replace('*', state.charAt(4)));
-                successors.add(state.replace(state.charAt(3), '*').replace(state.charAt(6), state.charAt(3)).replace('*', state.charAt(6)));
+                childNode.add(state.replace(state.charAt(3), '*').replace(state.charAt(0), state.charAt(3)).replace('*', state.charAt(0)));
+                childNode.add(state.replace(state.charAt(3), '*').replace(state.charAt(4), state.charAt(3)).replace('*', state.charAt(4)));
+                childNode.add(state.replace(state.charAt(3), '*').replace(state.charAt(6), state.charAt(3)).replace('*', state.charAt(6)));
                 break;
             }
+            
+            // Add succcesor when a move is made from the very middle of the board
             case 4: {
-                successors.add(state.replace(state.charAt(4), '*').replace(state.charAt(1), state.charAt(4)).replace('*', state.charAt(1)));
-                successors.add(state.replace(state.charAt(4), '*').replace(state.charAt(3), state.charAt(4)).replace('*', state.charAt(3)));
-                successors.add(state.replace(state.charAt(4), '*').replace(state.charAt(5), state.charAt(4)).replace('*', state.charAt(5)));
-                successors.add(state.replace(state.charAt(4), '*').replace(state.charAt(7), state.charAt(4)).replace('*', state.charAt(7)));
+                childNode.add(state.replace(state.charAt(4), '*').replace(state.charAt(1), state.charAt(4)).replace('*', state.charAt(1)));
+                childNode.add(state.replace(state.charAt(4), '*').replace(state.charAt(3), state.charAt(4)).replace('*', state.charAt(3)));
+                childNode.add(state.replace(state.charAt(4), '*').replace(state.charAt(5), state.charAt(4)).replace('*', state.charAt(5)));
+                childNode.add(state.replace(state.charAt(4), '*').replace(state.charAt(7), state.charAt(4)).replace('*', state.charAt(7)));
                 break;
             }
+
+            // Add succcesor when a move is made from the middle right hand side of the board
             case 5: {
-                successors.add(state.replace(state.charAt(5), '*').replace(state.charAt(2), state.charAt(5)).replace('*', state.charAt(2)));
-                successors.add(state.replace(state.charAt(5), '*').replace(state.charAt(4), state.charAt(5)).replace('*', state.charAt(4)));
-                successors.add(state.replace(state.charAt(5), '*').replace(state.charAt(8), state.charAt(5)).replace('*', state.charAt(8)));
+                childNode.add(state.replace(state.charAt(5), '*').replace(state.charAt(2), state.charAt(5)).replace('*', state.charAt(2)));
+                childNode.add(state.replace(state.charAt(5), '*').replace(state.charAt(4), state.charAt(5)).replace('*', state.charAt(4)));
+                childNode.add(state.replace(state.charAt(5), '*').replace(state.charAt(8), state.charAt(5)).replace('*', state.charAt(8)));
                 break;
             }
+            
+            // Add succcesor when a move is made from the bottom left hand corner of the board
             case 6: {
-                successors.add(state.replace(state.charAt(6), '*').replace(state.charAt(3), state.charAt(6)).replace('*', state.charAt(3)));
-                successors.add(state.replace(state.charAt(6), '*').replace(state.charAt(7), state.charAt(6)).replace('*', state.charAt(7)));
+                childNode.add(state.replace(state.charAt(6), '*').replace(state.charAt(3), state.charAt(6)).replace('*', state.charAt(3)));
+                childNode.add(state.replace(state.charAt(6), '*').replace(state.charAt(7), state.charAt(6)).replace('*', state.charAt(7)));
                 break;
 
             }
+            
+            // Add the next node to a list when a move is made from the bottom middle of the board
             case 7: {
-                successors.add(state.replace(state.charAt(7), '*').replace(state.charAt(4), state.charAt(7)).replace('*', state.charAt(4)));
-                successors.add(state.replace(state.charAt(7), '*').replace(state.charAt(6), state.charAt(7)).replace('*', state.charAt(6)));
-                successors.add(state.replace(state.charAt(7), '*').replace(state.charAt(8), state.charAt(7)).replace('*', state.charAt(8)));
+                childNode.add(state.replace(state.charAt(7), '*').replace(state.charAt(4), state.charAt(7)).replace('*', state.charAt(4)));
+                childNode.add(state.replace(state.charAt(7), '*').replace(state.charAt(6), state.charAt(7)).replace('*', state.charAt(6)));
+                childNode.add(state.replace(state.charAt(7), '*').replace(state.charAt(8), state.charAt(7)).replace('*', state.charAt(8)));
                 break;
             }
+            
+            // Add the next node to a list when a move is made from the bottom right hand corner of the board
             case 8: {
-                successors.add(state.replace(state.charAt(8), '*').replace(state.charAt(5), state.charAt(8)).replace('*', state.charAt(5)));
-                successors.add(state.replace(state.charAt(8), '*').replace(state.charAt(7), state.charAt(8)).replace('*', state.charAt(7)));
+                childNode.add(state.replace(state.charAt(8), '*').replace(state.charAt(5), state.charAt(8)).replace('*', state.charAt(5)));
+                childNode.add(state.replace(state.charAt(8), '*').replace(state.charAt(7), state.charAt(8)).replace('*', state.charAt(7)));
                 break;
             }
         }
-
-        return successors;
-
-
+        return childNode;
     }
 	
 // ================================================================================================================================= \\
@@ -172,8 +186,11 @@ public class Node {
 // ================================================================================================================================= \\
 	public static void printOutput(Node goal, Set<String> visitedNodes, Node root) {
 		
-		int depth = 0;
-		
+		int depth = 0;											// Initialize variable to correctly retrieve depth of search
+        String initialState = root.getCurrentState();			// Initialize variable for starting state
+        String goalState;										// Initialize variable for goal / ending state        
+        int moveNum = 1;										// Initialize variable to display correct move #
+        
         Stack<Node> moveList = new Stack<Node>();
         moveList.push(goal);
         while (!goal.getCurrentState().equals(root.getCurrentState())) {
@@ -181,14 +198,15 @@ public class Node {
             goal = goal.getParent();
         }
         
-        String initialState = root.getCurrentState();			// Initialize starting state
-        String goalState;										// Initialize goal / ending state
-                
+    	System.out.println("       This is your puzzle!         ");
+    	System.out.println("===================================");
+    	
+    	// First retrieve root state and print it, then print the path taken to reach the goal
         for (int i = moveList.size() - 1; i >= 0; i--) {
-            System.out.println(" ");
             goalState = moveList.get(i).getCurrentState();
             if (!initialState.equals(goalState)) {
-                System.out.println("************ Moving " + goalState.charAt(initialState.indexOf('0')) + " ************");
+            	System.out.println("    Move #" + moveNum++ + " - " + goalState.charAt(initialState.indexOf('0')) + " has been moved");
+                System.out.println("===================================");
                 depth++;
             }
             
@@ -197,23 +215,19 @@ public class Node {
             String middleLine = (moveList.get(i).getCurrentState().substring(3, 6));
             String bottomLine = (moveList.get(i).getCurrentState().substring(6, 9));
 
-            System.out.println("               " + topLine);
-            System.out.println("               " + middleLine);
-            System.out.println("               " + bottomLine);
-            System.out.println("**********************************");
-
-            System.out.println("");
+            System.out.println(topLine.replace("", "        "));
+            System.out.println(middleLine.replace("", "        "));
+            System.out.println(bottomLine.replace("", "        "));        
+            System.out.print("===================================" + "\n\n");
         }
         
         // Print final statistics when the puzzle is solved
         System.out.println("============================= Statistics =============================");
-        System.out.println("                     Solution path provided above                     ");
-        System.out.println("");
-        System.out.println("Number of moves to solve the puzzle:  " + (moveList.size() - 1));
+        System.out.println("                   **Solution path provided above**                   " + "\n");
+        System.out.println("Number of moves to solve the puzzle: " + (moveList.size() - 1));
         System.out.println("Depth traveled in the tree to find solution: " + depth);
-        System.out.println("Number of nodes generated:  " + (visitedNodes.size()));
+        System.out.println("Number of nodes generated: " + (visitedNodes.size()));
         System.out.println("======================================================================");
-		
 	}
 	
 }
