@@ -15,10 +15,20 @@ public class createPuzzle {
 		Scanner scanner = new Scanner(System.in);
 		int row = 3;
 		int col = 3;
+		
 		int[][] matrix = new int[row][col];
+		int[][] goal = { {1, 2, 3}, {8, 0, 4}, {7, 6, 5} };
 		
 		enterMatrixData(scanner, matrix, row, col);
-		printMatrix(matrix, row, col);
+		
+		if(solvable(matrix)) {
+			System.out.println("Solvable");
+		} else {
+			System.out.println("Not Solvable");
+		}
+		
+//		printMatrix(matrix, row, col);
+		
 	}
 	
 	// Function to prompt user to enter custom puzzle
@@ -40,6 +50,25 @@ public class createPuzzle {
 				
 			}
 		}
+	}
+	
+	// Find the amount of inversed tiles are in the puzzle
+	static int getInverseCount(int[][] arr) {
+		int inverse_count = 0;
+		for( int i = 0; i < 3 - 1; i++) {
+			for( int j = i + 1; j < 3; j++) {
+				if ( arr[j][i] > 0 && arr[j][i] > 0 && arr[j][i] > arr[i][j]) {
+					inverse_count++;
+				}
+			}
+		}
+		return inverse_count;
+	}
+	
+	// Determine whether or not the puzzle is solvable
+	static boolean solvable(int[][] puzzle) {
+		int inverseCount = getInverseCount(puzzle);
+		return (inverseCount % 2 == 0);
 	}
 	
 	// Function to display the user's custom puzzle
