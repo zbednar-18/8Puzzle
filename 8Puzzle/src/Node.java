@@ -1,5 +1,3 @@
-import java.awt.*;
-import java.awt.List;
 import java.util.*;
 
 /**
@@ -79,14 +77,11 @@ public class Node {
         this.parent = parent;
     }
 
-
-    // Constructor
     public Node(String state) {
         this.state = state;
         children = new ArrayList<Node>();
     }
 
-    // Properties
     public String getCurrentState() {
         return state;
     }
@@ -95,7 +90,6 @@ public class Node {
         return children;
     }
 
-    // Public interface
     public void addChild(Node child) {
         children.add(child);
     }

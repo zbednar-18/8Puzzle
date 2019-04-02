@@ -30,7 +30,7 @@ public class createPuzzle {
 		
 		String root = rootStringBuffer.toString();  		// Initialize the root variable
 		String goal = "123804765";							// Initialize the goal variable
-				
+				System.out.println(root);
 		// Determine if the user's puzzle is solvable and if it is, solve the puzzle
 		if(solvable(matrix)) {
 			System.out.print("\n" + "This puzzle is able to be solved!" + "\n\n");
@@ -48,12 +48,12 @@ public class createPuzzle {
 	
 	// Function to allow the user to select a search method
 	public static void selectSearchMethod(Scanner searchScanner, Search search) {
-		System.out.print("====================================================================================================" + "\n\n");
-		System.out.println("Which type of search algorithm would you like to use to complete this puzzle?");
+		System.out.print("==========================================================================" + "\n\n");
+		System.out.println("Which algorithm would you like to use to complete this puzzle?");
 		System.out.println("	1 - Breadth First Search");
-		System.out.println("	2 - A* using the number of misplaced tiles as the heuristic");
-		System.out.print("	3 - A* using the sum of the distances of each tile to their goal position as the heuristic" + "\n\n");
-		System.out.print("====================================================================================================" + "\n");
+		System.out.println("	2 - A* - h(n) = number of misplaced tiles");
+		System.out.print("	3 - A* - h(n) sum of distances of each tile to its goal position" + "\n\n");
+		System.out.print("==========================================================================" + "\n");
 		
 		// If-else statement to determine which search algorithm to use based off user input
 		int searchMethod = searchScanner.nextInt();				 // Initialize variable for scanner input
