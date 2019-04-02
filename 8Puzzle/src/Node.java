@@ -16,8 +16,6 @@ public class Node {
     private String state;
     private ArrayList<Node> children;
     private Node parent;
-    private int cost;
-    private int estimatedCostToGoal;
     private int totalCost;
     private int depth;
 
@@ -47,22 +45,6 @@ public class Node {
 
     public void setTotalCost(int cost, int estimatedCost) {
         this.totalCost = cost + estimatedCost;
-    }
-
-    public int getEstimatedCostToGoal() {
-        return estimatedCostToGoal;
-    }
-
-    public void setEstimatedCostToGoal(int estimatedCostToGoal) {
-        this.estimatedCostToGoal = estimatedCostToGoal;
-    }
-
-    public int getCost() {
-        return cost;
-    }
-
-    public void setCost(int cost) {
-        this.cost = cost;
     }
 
     public void setState(String state) {

@@ -30,11 +30,10 @@ public class createPuzzle {
 		
 		String root = rootStringBuffer.toString();  		// Initialize the root variable
 		String goal = "123804765";							// Initialize the goal variable
-				System.out.println(root);
+
 		// Determine if the user's puzzle is solvable and if it is, solve the puzzle
 		if(solvable(matrix)) {
 			System.out.print("\n" + "This puzzle is able to be solved!" + "\n\n");
-		
 			Search search = new Search(new Node(root), goal);
 			selectSearchMethod(searchScanner, search);
 		} else {
