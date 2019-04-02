@@ -43,7 +43,7 @@ public class Search {
     		List<String> nextNode = Node.getChildNode(currentNode.getCurrentState());
     		for(String nodes : nextNode) {
     			if (setOfStates.contains(nodes)) 
-    				continue;
+    				continue;								// Skips the initial child
     			setOfStates.add(nodes);
     			Node child = new Node(nodes);
     			currentNode.addChild(child);
@@ -58,16 +58,80 @@ public class Search {
 // ================================================================================================================================= \\
 //                                                  Hamming Distance Search Function                                                 \\
 // ================================================================================================================================= \\    
-//    public void hammingAStarSearch() {
-//    	
-//    }
+    public void hammingAStarSearch() {
+    	Set<String> setOfStates = new HashSet<String>();
+    	Node node = new Node(root.getCurrentState());
+    	node.setTotalCost(0); 								// Set total cost for root node
+    	
+    	compareCost compareCost = new compareCost();
+    	
+    	PriorityQueue<Node> compareCostQueue = new PriorityQueue<Node>(10, compareCost);
+    	Node currentNode = node;
+    	
+    	while (!currentNode.getCurrentState().equals(goal)) {
+    		setOfStates.add(currentNode.getCurrentState());
+    		List<String> nextChild = Node.getChildNode(currentNode.getCurrentState());
+    		for (String nodes : nextChild) {
+    			if (setOfStates.contains(nodes))
+    				continue;								// Skips the initial child
+    			setOfStates.add(nodes);
+    			Node child = new Node(nodes);
+    			currentNode.addChild(child);
+    			child.setParent(currentNode);
+    			child.setTotalCost(currentNode.getTotalCost() + Character.getNumericValue(child.getCurrentState().charAt(child.getParent().getCurrentState().indexOf('0'))), hammingDistance(child.getCurrentState(), goal));
+    		}
+    		currentNode = compareCostQueue.poll();
+    	}
+    	Node.printOutput(currentNode, setOfStates, root);
+    }
     
-    
+    private int hammingDistance(String currentNode, String goal) {
+    	int distance = 0;
+    	for (int i = 0; i < currentNode.length(); i+= 1) {
+    		if (currentNode.charAt(i) != goal.charAt(i)) {
+    			distance += 1;
+    		}
+    	}
+    	return distance;
+    }
     
 // ================================================================================================================================= \\
 //                                                 Manhattan Distance Search Function                                                \\
 // ================================================================================================================================= \\
-//    public void manhattanAStarSearch() {
-//    	
-//    }
+    public void manhattanAStarSearch() {
+    	Set<String> setOfStates = new HashSet<String>();
+    	Node node = new Node(root.getCurrentState());
+    	node.setTotalCost(0); 								// Set total cost for root node
+    	
+    	compareCost compareCost = new compareCost();
+    	
+    	PriorityQueue<Node> compareCostQueue = new PriorityQueue<Node>(10, compareCost);
+    	Node currentNode = node;
+    	
+    	while (!currentNode.getCurrentState().equals(goal)) {
+    		setOfStates.add(currentNode.getCurrentState());
+    		List<String> nextChild = Node.getChildNode(currentNode.getCurrentState());
+    		for (String nodes : nextChild) {
+    			if (setOfStates.contains(nodes))
+    				continue;								// Skips the initial child
+    			setOfStates.add(nodes);
+    			Node child = new Node(nodes);
+    			currentNode.addChild(child);
+    			child.setParent(currentNode);
+    			child.setTotalCost(currentNode.getTotalCost() + Character.getNumericValue(child.getCurrentState().charAt(child.getParent().getCurrentState().indexOf('0'))), manhattanDistance(child.getCurrentState(), goal));
+    		}
+    		currentNode = compareCostQueue.poll();
+    	}
+    	Node.printOutput(currentNode, setOfStates, root);
+    }
+    
+    private int manhattanDistance(String currentNode, String goal) {
+    	int distance = 0;
+    	for (int i = 0; i < currentNode.length(); i+= 1) {
+    		if (currentNode.charAt(i) != goal.charAt(i)) {
+    			distance += 1;
+    		}
+    	}
+    	return distance;
+    }
 }

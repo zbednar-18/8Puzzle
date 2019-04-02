@@ -57,12 +57,13 @@ public class createPuzzle {
 		
 		// If-else statement to determine which search algorithm to use based off user input
 		int searchMethod = searchScanner.nextInt();				 // Initialize variable for scanner input
-		if ( searchMethod == 1) {
-			search.breadthFirstSearch();
+		
+		if ( searchMethod == 1) {		
+			search.breadthFirstSearch();						// h(n) = 0 (breadth-first search)
 		} else if ( searchMethod == 2) {
-			System.out.println("Under Construction");            // Replace this with method for hamming A* function
+			search.hammingAStarSearch();						// h(n) = number of misplaced tiles
 		} else if ( searchMethod == 3) {
-			System.out.println("Under Construction");			 // Replace this with method for manhattan A* function
+			search.manhattanAStarSearch();						// h(n) = sum of distances of each tile to its goal position
 		} else {
 			System.out.println("The entered number must be between the values of 0 and 8.");
 			System.out.println("Please try again!");
