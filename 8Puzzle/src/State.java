@@ -13,7 +13,7 @@ public interface State {
 	
 	ArrayList<State> createNext();
 	
-	double getCost();
+	int getCost();
 	
 	void print();
 	
