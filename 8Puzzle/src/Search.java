@@ -1,73 +1,246 @@
 import java.util.*;
 
+/**
+ * 
+ * @author Zackery Bednar
+ * @author Thomas Zanecosky
+ * 
+ * Search.java
+ * 
+ * This java class contains the getters, setters, and constructors for
+ * multiple objects used in this program. This java class also contains
+ * the most important pieces including the search algorithms used to
+ * solve the 8 Puzzle provided by the user.
+ *
+ */
+
 public class Search {
-	private Node root;
-	private String goal;
-	
-	// Getters and Setters for the root state and goal of a node
-    public Node getRoot() {
-        return root;
-    }
+	private Node root; // Initialize node object
+	private String goal; // Initialize the goal
 
-    public void setRoot(Node root) {
-        this.root = root;
-    }
+	/**
+	 * Getter and setter for root variable
+	 * 
+	 * @return root
+	 */
+	public Node getRoot() {
+		return root;
+	}
 
-    public String getGoalState() {
-        return goal;
-    }
+	public void setRoot(Node root) {
+		this.root = root;
+	}
 
-    public void setGoalState(String goal) {
-        this.goal = goal;
-    }
+	/**
+	 * Getter and setter for goal variable
+	 * 
+	 * @return goal
+	 */
+	public String getGoalState() {
+		return goal;
+	}
 
-    public Search(Node root, String goal) {
-        this.root = root;
-        this.goal = goal;
-    }
-    
- // ================================================================================================================================= \\
- //                                              Breadth-First Search Function                                                        \\
- // ================================================================================================================================= \\
-    public void breadthFirstSearch() {
-    	Set<String> setOfStates = new HashSet<String>();
-    	Node node = new Node(root.getCurrentState());
-    	
-    	Queue<Node> queue = new LinkedList<Node>();
-    	Node currentNode = node;
-    	
-    	// While current node does not equal the goal node, continue looping to find solution while adding the solution
-    	// path to a string. This will allow for the path to be displayed in the final output.
-    	while( !currentNode.getCurrentState().equals(goal)) {
-    		setOfStates.add(currentNode.getCurrentState());
-    		List<String> nextNode = Node.getChildNode(currentNode.getCurrentState());
-    		for(String nodes : nextNode) {
-    			if (setOfStates.contains(nodes)) 
-    				continue;
-    			setOfStates.add(nodes);
-    			Node child = new Node(nodes);
-    			currentNode.addChild(child);
-    			child.setParent(currentNode);
-    			queue.add(child);
-    		}
-    		currentNode = queue.poll();
-    	}
-    	Node.printOutput(currentNode, setOfStates, root);
-    }
-    
-// ================================================================================================================================= \\
-//                                                  Hamming Distance Search Function                                                 \\
-// ================================================================================================================================= \\    
-//    public void hammingAStarSearch() {
-//    	
-//    }
-    
-    
-    
-// ================================================================================================================================= \\
-//                                                 Manhattan Distance Search Function                                                \\
-// ================================================================================================================================= \\
-//    public void manhattanAStarSearch() {
-//    	
-//    }
+	public void setGoalState(String goal) {
+		this.goal = goal;
+	}
+
+	/**
+	 * Constructor for the search function
+	 * 
+	 * @param root
+	 * @param goal
+	 */
+	public Search(Node root, String goal) {
+		this.root = root;
+		this.goal = goal;
+	}
+
+	/**
+	 * This function is called when the user decides to complete their puzzle
+	 * through choice 1. The nodes are stored in a basic queue since there is
+	 * nothing to be compared in terms of heuristics. The algorithm simply 
+	 * finds the shortest path possible to the goal while visiting every
+	 * possible state provided from the previous state. Since there is nothing
+	 * to compare, the nodes are simply printed in order from the queue.
+	 */
+	public void breadthFirstSearch() {
+		Set<String> setOfStates = new HashSet<String>();
+		Node node = new Node(root.getCurrentState());
+
+		Queue<Node> queue = new LinkedList<Node>();
+		Node currentNode = node;
+
+		// While current node does not equal the goal node, continue looping to find
+		// solution while adding the solution path to a string. This will allow for 
+		// the path to be displayed in the final output.
+		while (!currentNode.getCurrentState().equals(goal)) {
+			setOfStates.add(currentNode.getCurrentState());
+			List<String> nextNode = Node.getChildNode(currentNode.getCurrentState());
+			for (String nodes : nextNode) {
+				if (setOfStates.contains(nodes))
+					continue; 			// Skips the initial child
+				setOfStates.add(nodes);
+				Node child = new Node(nodes);
+				currentNode.addChild(child);
+				child.setParent(currentNode);
+				queue.add(child);
+			}
+			currentNode = queue.poll();
+		}
+		Node.printOutput(currentNode, setOfStates, root);
+	}
+
+	/**
+	 * This function is called when the user decides to complete their puzzle
+	 * through choice 2. It calculates the Hamming distance (how many misplaced
+	 * tiles are in the puzzle) and places them in a PriorityQueue, which sorts by a
+	 * value generated by the compareCost function from the compareCost.java file.
+	 * The function then uses the hammingDistance() function below in order to
+	 * correctly determine the best possible solution path using this heuristic.   
+	 */
+	public void hammingAStarSearch() {
+		Set<String> setOfStates = new HashSet<String>();
+		Node node = new Node(root.getCurrentState());
+		node.setTotalCost(0);
+
+		// Create a new object that will compare the cost of two nodes (x and y) with
+		// the compareCost.java class
+		compareCost compareCost = new compareCost();
+		// A queue created that sorts elements by their cost as generated by the compare
+		// cost method
+		PriorityQueue<Node> compareCostQueue = new PriorityQueue<Node>(compareCost);
+
+		Node currentNode = node;
+		while (!currentNode.getCurrentState().equals(goal)) {
+			setOfStates.add(currentNode.getCurrentState());
+			List<String> nextNode = Node.getChildNode(currentNode.getCurrentState());
+			for (String n : nextNode) {
+				if (setOfStates.contains(n))
+					continue;
+				setOfStates.add(n);
+				Node child = new Node(n);
+				currentNode.addChild(child);
+				child.setParent(currentNode);
+				child.setTotalCost(
+						currentNode.getTotalCost() + Character.getNumericValue(
+								child.getCurrentState().charAt(child.getParent().getCurrentState().indexOf('0'))),
+						hammingDistance(child.getCurrentState(), goal));
+				compareCostQueue.add(child);
+			}
+			currentNode = compareCostQueue.poll();
+		}
+		Node.printOutput(currentNode, setOfStates, root);
+	}
+
+	/**
+	 * This function calculates the hamming distance of the tiles (how many tiles
+	 * are not in the correct place). The function compares the current node that
+	 * it is in to the goal, and determines whether the character in the current
+	 * node matches the one in the goal node. If the characters do not match,
+	 * then 1 is added to the distance value each time. 
+	 * 
+	 * For example:
+	 * 
+	 *    Initial			Goal
+	 * -------------   -------------
+     * | 2 | 8 | 3 |   | 1 | 2 | 3 |
+     * | 1 | 6 | 4 |   | 8 | 0 | 4 |
+     * | 7 | 5 | 0 |   | 7 | 6 | 5 |
+     * -------------   -------------
+     * 
+     * Each out of place tile in the initial state would add a value of 1 to the
+     * distance. In this case, the hamming distance would be 6.
+	 * 
+	 * @param currentNode
+	 * @param goal
+	 * @return distance
+	 */
+	private int hammingDistance(String currentNode, String goal) {
+		int distance = 0;
+		for (int i = 0; i < currentNode.length(); i += 1) {
+			if (currentNode.charAt(i) != goal.charAt(i)) {
+				distance += 1;
+			}
+		}
+		return distance;
+	}
+
+	/**
+	 * This function is called when the user decides to complete their puzzle
+	 * through choice 3. It calculates the Manhattan distance (sum of all misplaced
+	 * tiles from their goals) and places them in a PriorityQueue, which sorts by a
+	 * value generated by the compareCost function from the compareCost.java file.
+	 * The function then uses the manhattanDistance() function below in order to
+	 * correctly determine the best possible solution path using this heuristic.
+	 */
+	public void manhattanAStarSearch() {
+		Set<String> setOfStates = new HashSet<String>();
+		Node node = new Node(root.getCurrentState());
+		node.setTotalCost(0); // Set total cost for root node
+
+		compareCost compareCost = new compareCost();
+
+		PriorityQueue<Node> compareCostQueue = new PriorityQueue<Node>(compareCost);
+		Node currentNode = node;
+
+		while (!currentNode.getCurrentState().equals(goal)) {
+			setOfStates.add(currentNode.getCurrentState());
+			List<String> nextChild = Node.getChildNode(currentNode.getCurrentState());
+			for (String nodes : nextChild) { // For each nextChild in the PriorityQueue it becomes a String variable
+												// nodes
+
+				if (setOfStates.contains(nodes)) // If the HashSet setOfStates has any of the values stored in the nodes
+													// variable do this loop
+					continue; // Skips the initial child
+				setOfStates.add(nodes);
+				Node child = new Node(nodes);
+				currentNode.addChild(child);
+				child.setParent(currentNode);
+
+				/**
+				 * Total cost is initialized at zero. The total cost is then added to the
+				 * numeric value of the tile located in it's parent's state which is located at
+				 * the index 0 and adds it to the value generated by the manhattanDistance
+				 * function.
+				 */
+				child.setTotalCost(
+						currentNode.getTotalCost() + Character.getNumericValue(
+								child.getCurrentState().charAt(child.getParent().getCurrentState().indexOf('0'))),
+						manhattanDistance(child.getCurrentState(), goal));
+				compareCostQueue.add(child);
+			}
+			currentNode = compareCostQueue.poll();
+		}
+		Node.printOutput(currentNode, setOfStates, root);
+	}
+
+	/**
+	 * This function calculates the Manhattan distance of the tiles. This function
+	 * returns the absolute value of variable i (which is determined by the current
+	 * state) modulo 3 - variable j (which is the goal state) modulo 3. For example,
+	 * in solvable puzzle, 2 is located in coordinate (0,0) and has a goal
+	 * coordinate of (0,1). The formula would then look like this:
+	 * 
+	 * distance = distance + ((Math.abs( 2 % 3 - 1 % 3)) + Math.abs(2/3 + 1/3));
+	 * distance = distance + ((Math.abs(2 - 1)) + Math.abs(1 + 1)); distance =
+	 * distance + (1 + 2) distance = distance + 3
+	 * 
+	 * In this instance, 2 is one tile away from it's desired goal. Therefore
+	 * distance = 1 + 3 = 4. Giving it a heuristic value of 4.
+	 * 
+	 * @param currentNode
+	 * @param goal
+	 * @return distance
+	 */
+	private int manhattanDistance(String currentNode, String goal) {
+		int distance = 0;
+		for (int i = 0; i < currentNode.length(); i += 1) {
+			for (int j = 0; j < goal.length(); j += 1) {
+				if (currentNode.charAt(i) == goal.charAt(j)) {
+					distance = distance + ((Math.abs(i % 3 - j % 3)) + Math.abs(i / 3 + j / 3));
+				}
+			}
+		}
+		return distance;
+	}
 }
